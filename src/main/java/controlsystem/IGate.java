@@ -1,6 +1,7 @@
 package controlsystem;
 
 public interface IGate {
+    int getTimeInProcess();
     Truck getProcessedTruck();
     void processStep();
     void releaseTruck();

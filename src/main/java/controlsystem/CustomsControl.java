@@ -5,6 +5,7 @@ public class CustomsControl {
     private ControlLane secondLane;
     private WaitingLane waitingLane;
     private int truckCounter;
+    private CustomsControlStatusPrinter printer;
 
     public ControlLane getFirstLane() {
         return firstLane;
@@ -27,7 +28,7 @@ public class CustomsControl {
         this.secondLane = new ControlLane();
         this.waitingLane = new WaitingLane();
         this.truckCounter = 0;
-    }
+     }
 
     public String arrive(int truckWeight){
         Truck arrivingTruck = new Truck(truckWeight, generateTruckIdAndIncrementCounter());
@@ -68,7 +69,8 @@ public class CustomsControl {
     }
 
     public void printStatus(){
-
+        printer = new CustomsControlStatusPrinter(firstLane, secondLane, waitingLane);
+        printer.print();
     }
 
     public void step(){

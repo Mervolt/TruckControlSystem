@@ -1,6 +1,9 @@
 package controlsystem;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
+
 public class ControlLane implements ILane {
     private LinkedList<Truck> queue;
     private ControlGate gate;
@@ -15,7 +18,7 @@ public class ControlLane implements ILane {
         return queue;
     }
 
-    public IGate getGate() {
+    public ControlGate getGate() {
         return gate;
     }
 
@@ -62,5 +65,10 @@ public class ControlLane implements ILane {
     @Override
     public int getTrucksAmount(){
         return queue.size();
+    }
+
+    @Override
+    public List<Truck> getTrucks() {
+        return new ArrayList<>(queue);
     }
 }

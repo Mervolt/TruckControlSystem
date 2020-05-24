@@ -2,6 +2,12 @@ package controlsystem;
 
 public class WaitingGate implements IGate {
     private Truck processedTruck;
+    private int timeInProcess;
+
+    @Override
+    public int getTimeInProcess() {
+        return timeInProcess;
+    }
 
     @Override
     public Truck getProcessedTruck() {
