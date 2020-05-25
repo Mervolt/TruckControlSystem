@@ -16,4 +16,8 @@ public class Truck {
     public String getTruckId() {
         return truckId;
     }
+
+    public boolean isLighter(Truck truck){
+        return this.getWeightAmount() < truck.getWeightAmount();
+    }
 }

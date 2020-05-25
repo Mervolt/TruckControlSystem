@@ -30,10 +30,15 @@ public class WaitingLane implements ILane {
             this.queue.add(arrivingTruck);
     }
 
-
     @Override
     public void processStep() {
-       Truck movingTruck = gate.getProcessedTruck();
+        if(gate.isEmpty())
+            moveTruckToGate();
+    }
+
+    private void moveTruckToGate() {
+        Truck firstTruck = queue.poll();
+        gate.placeTruck(firstTruck);
     }
 
     @Override

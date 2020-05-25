@@ -2,7 +2,6 @@ package controlsystem;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Random;
@@ -142,6 +141,18 @@ public class CustomsControlTest {
 
     @Test
     public void step() {
-        System.out.println(customsControl);
+
+    }
+
+    @Test
+    public void canTruckFromGateMove() {
+    }
+
+    @Test
+    public void canTruckFromLaneMove() {
+    }
+
+    @Test
+    public void countFreeSlots() {
     }
 }
