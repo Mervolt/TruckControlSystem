@@ -20,6 +20,8 @@ public class ControlGate implements IGate {
     @Override
     public void processStep(){
         this.timeInProcess++;
+        if(processedTruck == null)
+            return;
         if(timeInProcess == processedTruck.getWeightAmount())
             releaseTruck();
     }
