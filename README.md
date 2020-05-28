@@ -2,7 +2,7 @@
 System designed to simulate truck movement during customs control
 
 # System introduction and schema
-![Schema of control] /images/Customs_Control_Schema
+![Schema of control] (images/Customs_Control_Schema.png)
 
 Control Gate - Control gates are responsible for verifying cargo transported by trucks.
 There are two control gates in simulation. Time units needed to process truck through cargo control equals weight of a truck.
@@ -51,7 +51,7 @@ So the only possibility to save time is to place lighter trucks in longer lanes
 #Example
 Given example where number in square represents a truck and its time needed to be processed
 
-![First example of optimization] /images/Customs_Control_Example1
+![First example of optimization] (images/Customs_Control_Example1.PNG)
 We can count:
 Time for trucks in first lane to be processed as: 3 + 11 + 20 + 32 + 39 = 105
 (since time needed for truck to be processed is time needed for her and all her predecessors)
@@ -60,7 +60,7 @@ Time for trucks in second lane to be processed as: 5 + 20 + 24 + 30 + 40 = 119
 
 So average time for truck equals 22.4 time units [105 + 119 / 10 trucks in simulation]
 
-![Second example of optimization] /images/Customs_Control_Example2
+![Second example of optimization] (images/Customs_Control_Example2.PNG)
 We can count:
 Time for first lane trucks: 3 + 11 + 15 + 27 + 34 = 90
 Time for second lane trucks: 5 + 20 + 29 + 35 + 45 = 134
@@ -70,7 +70,7 @@ This is caused of course by the fact that truck's time to be processed affects o
 and trucks behind it so it does not matter which lane it affects.
 
 To see possible optimization we should consider example where there is not equal amount of trucks in both lanes
-![Third example of optimization] /images/Customs_Control_Example3
+![Third example of optimization] (images/Customs_Control_Example3.PNG)
 
 Time for first lane trucks: 3 + 11 + 20 + 32 + 39 = 105
 Time for second lane trucks: 5 + 20 + 24 + 30 = 79
@@ -78,7 +78,7 @@ With average time: 20,(4)
 
 Since truck affects itself and trucks behind it, we should place lighter trucks in longer queue
 to achieve lower waiting time.
-![Fourth example of optimization] /images/Customs_Control_Example4
+![Fourth example of optimization] (images/Customs_Control_Example4.png)
 
 Time for first lane trucks: 3 + 11 + 15 + 21 + 28 = 78
 Time for second lane trucks: 5 + 20 + 29 + 41 = 95
