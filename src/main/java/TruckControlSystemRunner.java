@@ -19,7 +19,7 @@ public class TruckControlSystemRunner {
                         control.printStatus();
                     else if (input.contains("arrive")) {
                         int weight = Integer.parseInt(runner.getOneArgumentFromParenthesis(input));
-                        control.arrive(weight);
+                        System.out.println(control.arrive(weight));
                     }
                     else if(input.contains("waitingTime")) {
                         String truckId = runner.getOneArgumentFromParenthesis(input);

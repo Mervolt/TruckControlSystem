@@ -212,18 +212,17 @@ public class CustomsControlStatusPrinter {
             if(lane != waitingLane)
                 appendTruckToBox(truck, lane);
             else
-                appendTruckToWaitingGate(truck, lane);
+                appendTruckToWaitingGate(truck);
             customsControlBuilder.append(" +");
         }
         else
             appendEmptyBox();
     }
 
-    private void appendTruckToWaitingGate(Truck truck, ILane lane) {
+    private void appendTruckToWaitingGate(Truck truck) {
         int truckNumber = getTruckNumber(truck.getTruckId());
         appendTruckNumber(truckNumber);
-        appendTruckProcessedTime(lane.getGate().getTimeInProcess());
-        customsControlBuilder.append("/   ");
+        customsControlBuilder.append(new String(new char[7]));
     }
 
     private void appendTruckToBox(Truck truck, ILane lane) {
