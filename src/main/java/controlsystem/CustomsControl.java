@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Class responsible for simulation of movement during customs control
+ */
 public class CustomsControl {
     private ControlLane firstLane;
     private ControlLane secondLane;
@@ -36,7 +39,11 @@ public class CustomsControl {
     }
 
 
-
+    /**
+     * method responsible for creating truck with given weight and placing it in customs control
+     * @param truckWeight weight of truck to arrive
+     * @return truckId of newly generated, placed truck
+     */
     public String arrive(int truckWeight){
         Truck arrivingTruck = truckGenerator.createTruck(truckWeight);
         if(!waitingLane.getGate().isEmpty())
@@ -48,6 +55,11 @@ public class CustomsControl {
         return arrivingTruck.getTruckId();
     }
 
+    /**
+     *
+     * @return control lane with lower processing time,
+     * or waiting lane if no free places are available in control lanes
+     */
     private ILane selectQuickestAvailableLane() {
         if(isControlLaneAvailable())
             return selectQuickestAvailableControlLane();
@@ -78,11 +90,17 @@ public class CustomsControl {
         return firstLaneProcessingTime > secondLaneProcessingTime ? secondLane : firstLane;
     }
 
+    /**
+     * method responsible for visualization of control
+     */
     public void printStatus(){
         CustomsControlStatusPrinter printer = new CustomsControlStatusPrinter(firstLane, secondLane, waitingLane);
         printer.print();
     }
 
+    /**
+     * method responsible for processing a one time unit step on the simulation
+     */
     public void step(){
         firstLane.processStep();
         secondLane.processStep();
@@ -101,6 +119,9 @@ public class CustomsControl {
         optimizeRoute();
     }
 
+    /**
+     * @return free slots in control lanes and gates
+     */
     public int countFreeSlots(){
         int controlLanesTrucks = firstLane.getTrucksAmount() + secondLane.getTrucksAmount();
         if(!firstLane.getGate().isEmpty())
@@ -112,10 +133,20 @@ public class CustomsControl {
         return controlLanesCapacity - controlLanesTrucks;
     }
 
+    /**
+     *
+     * @param freeSlots free slots in control lanes
+     * @return boolean whether there is a truck in waiting gate and place for truck in control lanes
+     */
     protected boolean canTruckFromGateMove(int freeSlots){
         return (freeSlots >= 1 && !waitingLane.getGate().isEmpty());
     }
 
+    /**
+     *
+     * @param freeSlots free slots in control lanes
+     * @return boolean whether there is a place for both truck from waiting gate and first from lane
+     */
     protected boolean canTruckFromLaneMove(int freeSlots){
         return (freeSlots == 2 && waitingLane.getTrucksAmount() > 0);
     }
@@ -131,6 +162,11 @@ public class CustomsControl {
         selectQuickestAvailableControlLane().placeArrivingTruck(truckFromLane);
     }
 
+    /**
+     * method responsible for switching trucks between lanes
+     * to achieve lower average processing time.
+     * it is processed after invoking step() to prepare new turn
+     */
     private void optimizeRoute(){
         TruckPlacement placement = countTruckPlacement();
         if(placement != TruckPlacement.balanced)
@@ -178,6 +214,9 @@ public class CustomsControl {
         longerLaneQueue.add(place, temporaryTruck);
     }
 
+    /**
+     * method responsible for generation of new truck and placing it into simulation
+     */
     public void generateTruck(){
         if(truckGenerator.isNewTruckGeneration()) {
             int truckWeight = truckGenerator.generateWeightForNewTruck();
@@ -187,14 +226,26 @@ public class CustomsControl {
             truckGenerator.incrementTruckGenerationCounter();
     }
 
+    /**
+     * turns off scheduled generation of new trucks (ON by default)
+     */
     public void turnOffGeneration(){
         truckGenerator.turnOffGeneration();
     }
 
+    /**
+     * turns on scheduled generation of new trucks (ON by default)
+     */
     public void turnOnGeneration(){
         truckGenerator.turnOnGeneration();
     }
 
+    /**
+     * changes params of scheduled generation of trucks
+     * @param frequency to be set
+     * @param weightCap to be set
+     *                  for new generated trucks
+     */
     public void changeGenerationParams(int frequency, int weightCap){
         turnOffGeneration();
         truckGenerator.setTruckGenerationFrequency(frequency);
@@ -202,6 +253,11 @@ public class CustomsControl {
         turnOnGeneration();
     }
 
+    /**
+     *
+     * @param truckId identification of truck
+     * @return estimated waiting time for truck to be processed
+     */
     public int getWaitingTime(String truckId){
         if(isTruckInControlGates(truckId))
             return countTimeForControlGateTruck(truckId);
@@ -214,9 +270,18 @@ public class CustomsControl {
     }
 
     private boolean isTruckInControlGates(String truckId) {
-        Truck firstGateTruck = firstLane.getGate().getProcessedTruck();
-        Truck secondGateTruck = secondLane.getGate().getProcessedTruck();
-        return truckId.equals(firstGateTruck.getTruckId()) || truckId.equals(secondGateTruck.getTruckId());
+        boolean isInFirstGate = false;
+        boolean isInSecondGate = false;
+        if(firstLane.getGate().getProcessedTruck() != null) {
+            String firstGateTruckId = firstLane.getGate().getProcessedTruck().getTruckId();
+            isInFirstGate = truckId.equals(firstGateTruckId);
+        }
+        if(secondLane.getGate().getProcessedTruck() != null) {
+            String secondGateTruckId = secondLane.getGate().getProcessedTruck().getTruckId();
+            isInSecondGate = truckId.equals(secondGateTruckId);
+        }
+
+        return (isInFirstGate || isInSecondGate);
     }
 
     private int countTimeForControlGateTruck(String truckId) {
@@ -301,6 +366,9 @@ public class CustomsControl {
         return waitingTime;
     }
 
+    /**
+     * method responsible for displaying status of all trucks in simulation
+     */
     public void status(){
         List<TruckStatus> statuses =  getAllTrucksStatuses();
         Collections.sort(statuses);
@@ -340,7 +408,10 @@ public class CustomsControl {
         }
     }
 
-
+    /**
+     * method displays to console all trucks in simulation
+     * @param trucks all trucks in simulation
+     */
     public void printStatus(List<TruckStatus> trucks){
         for(TruckStatus truckStatus: trucks){
             System.out.println(truckStatus.toString());

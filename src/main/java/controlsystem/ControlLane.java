@@ -34,6 +34,9 @@ public class ControlLane implements ILane {
         return queue.size();
     }
 
+    /**
+     * @return time needed to process truck in gate and all trucks currently placed in lane
+     */
     public int getLaneProcessingTime(){
         int totalTime = 0;
         for(Truck truck : queue)
@@ -42,6 +45,10 @@ public class ControlLane implements ILane {
         return totalTime;
     }
 
+    /**
+     * places truck in lane
+     * @param arrivingTruck truck to be placed in lane, and if possible in gate
+     */
     @Override
     public void placeArrivingTruck(Truck arrivingTruck){
         if(gate.getProcessedTruck() == null)
@@ -50,6 +57,10 @@ public class ControlLane implements ILane {
             queue.add(arrivingTruck);
     }
 
+    /**
+     * method is responsible for processing step for control lane
+     * i.e. it moves trucks along lane, and if possible places fist in gate
+     */
     @Override
     public void processStep() {
         gate.processStep();
@@ -57,16 +68,27 @@ public class ControlLane implements ILane {
             moveTruckToGate();
     }
 
+    /**
+     * method responsible for moving first truck from lane to gate
+     */
     private void moveTruckToGate() {
         Truck firstTruck = queue.poll();
         gate.placeTruck(firstTruck);
     }
 
+    /**
+     *
+     * @return amount of trucks currently in lane
+     */
     @Override
     public int getTrucksAmount(){
         return queue.size();
     }
 
+    /**
+     *
+     * @return copy of trucks list currently in lane
+     */
     @Override
     public List<Truck> getTrucks() {
         return new ArrayList<>(queue);

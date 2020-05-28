@@ -9,14 +9,13 @@ public class WaitingGate implements IGate {
         return timeInProcess;
     }
 
-    @Override
-    public Truck getProcessedTruck() {
-        return processedTruck;
+    public void incrementTimeInProcess() {
+        timeInProcess++;
     }
 
     @Override
-    public void processStep() {
-
+    public Truck getProcessedTruck() {
+        return processedTruck;
     }
 
     @Override

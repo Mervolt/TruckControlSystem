@@ -1,7 +1,6 @@
 package controlsystem;
 
 import java.util.List;
-/*TODO REFACTOR*/
 public class CustomsControlStatusPrinter {
     private CustomsControlPrinterHelper helper;
     private int lineCounter;
@@ -17,6 +16,9 @@ public class CustomsControlStatusPrinter {
         this.helper = new CustomsControlPrinterHelper();
     }
 
+    /**
+     * prints to console status of simulation
+     */
     public void print(){
         customsControlBuilder = new StringBuilder();
         appendWall();
@@ -24,7 +26,7 @@ public class CustomsControlStatusPrinter {
             appendControlBoard();
 
         }
-
+        appendWall();
         System.out.println(customsControlBuilder.toString());
 
     }
@@ -190,7 +192,7 @@ public class CustomsControlStatusPrinter {
             customsControlBuilder.append(truckWeight);
     }
 
-    public void appendBoxWithTruck(String boxName){
+    private void appendBoxWithTruck(String boxName){
         Truck truck = null;
         ILane lane = null;
         if(boxName.equals(helper.firstControlBoxName) && !firstLane.getGate().isEmpty()) {
@@ -207,11 +209,21 @@ public class CustomsControlStatusPrinter {
         }
         if(truck != null) {
             customsControlBuilder.append("+ ");
-            appendTruckToBox(truck, lane);
+            if(lane != waitingLane)
+                appendTruckToBox(truck, lane);
+            else
+                appendTruckToWaitingGate(truck, lane);
             customsControlBuilder.append(" +");
         }
         else
             appendEmptyBox();
+    }
+
+    private void appendTruckToWaitingGate(Truck truck, ILane lane) {
+        int truckNumber = getTruckNumber(truck.getTruckId());
+        appendTruckNumber(truckNumber);
+        appendTruckProcessedTime(lane.getGate().getTimeInProcess());
+        customsControlBuilder.append("/   ");
     }
 
     private void appendTruckToBox(Truck truck, ILane lane) {

@@ -6,7 +6,7 @@ import java.util.List;
 
 public class WaitingLane implements ILane {
     private LinkedList<Truck> queue;
-    private IGate gate;
+    private WaitingGate gate;
 
     public WaitingLane() {
         this.queue = new LinkedList<>();
@@ -22,6 +22,10 @@ public class WaitingLane implements ILane {
         return gate;
     }
 
+    /**
+     *
+     * @param arrivingTruck to be placed in lane
+     */
     @Override
     public void placeArrivingTruck(Truck arrivingTruck) {
         if(gate.getProcessedTruck() == null)
@@ -30,12 +34,19 @@ public class WaitingLane implements ILane {
             this.queue.add(arrivingTruck);
     }
 
+    /**
+     * responsible for processing one time unit step in simulation to trucks in lane
+     */
     @Override
     public void processStep() {
         if(gate.isEmpty())
             moveTruckToGate();
+        gate.incrementTimeInProcess();
     }
 
+    /**
+     * moves first truck from lane to gate
+     */
     private void moveTruckToGate() {
         Truck firstTruck = queue.poll();
         gate.placeTruck(firstTruck);

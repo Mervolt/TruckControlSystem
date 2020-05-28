@@ -17,6 +17,11 @@ public class Truck {
         return truckId;
     }
 
+    /**
+     *
+     * @param truck to be compared with this
+     * @return true if this is lighter than truck
+     */
     public boolean isLighter(Truck truck){
         return this.getWeightAmount() < truck.getWeightAmount();
     }

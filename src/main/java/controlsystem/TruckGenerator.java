@@ -13,11 +13,6 @@ public class TruckGenerator{
     private Random random = new Random();
     protected int truckGenerationCounterStarter = 1;
 
-    public void turnOffGeneration(){
-        generationEnabled = false;
-        truckGenerationCounter = truckGenerationCounterStarter;
-    }
-
     public int getTruckCounter() {
         return truckCounter;
     }
@@ -42,10 +37,27 @@ public class TruckGenerator{
         this.truckGenerationFrequency = truckGenerationFrequency;
     }
 
+    /**
+     * turns on scheduled generation
+     */
     public void turnOnGeneration(){
         generationEnabled = true;
     }
 
+    /**
+     * turns off scheduled generation
+     * and restart counter
+     */
+    public void turnOffGeneration(){
+        generationEnabled = false;
+        truckGenerationCounter = truckGenerationCounterStarter;
+    }
+
+
+    /**
+     *
+     * @return boolean whether scheduled generation is turned on
+     */
     public boolean isGenerationEnabled(){
         return generationEnabled;
     }
@@ -54,10 +66,18 @@ public class TruckGenerator{
         this.truckGenerationCounter++;
     }
 
+    /**
+     *
+     * @return boolean if new truck should be generated
+     */
     public boolean isNewTruckGeneration(){
         return truckGenerationCounter == truckGenerationFrequency;
     }
 
+    /**
+     *
+     * @return weight for the truck to be generated
+     */
     public int generateWeightForNewTruck(){
         truckGenerationCounter = truckGenerationCounterStarter;
         /* +1 to make it [1;capacity] */
@@ -68,6 +88,10 @@ public class TruckGenerator{
         return new Truck(truckWeight, generateTruckIdAndIncrementCounter());
     }
 
+    /**
+     * generated id for truck and increments truck in simulation counter
+     * @return
+     */
     public String generateTruckIdAndIncrementCounter() {
         String truckId = "T-" + this.truckCounter;
         this.truckCounter++;
