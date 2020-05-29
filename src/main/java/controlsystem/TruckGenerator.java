@@ -13,26 +13,50 @@ public class TruckGenerator{
     private Random random = new Random();
     protected int truckGenerationCounterStarter = 1;
 
+    /**
+     *
+     * @return current value of truck counter
+     */
     public int getTruckCounter() {
         return truckCounter;
     }
 
+    /**
+     *
+     * @return current value of truck generation counter
+     */
     public int getTruckGenerationCounter() {
         return truckGenerationCounter;
     }
 
+    /**
+     *
+     * @return current value of capacity
+     */
     public int getTruckWeightCapacity() {
         return truckWeightCapacity;
     }
 
+    /**
+     *
+     * @param truckWeightCapacity weight capacity to be set
+     */
     public void setTruckWeightCapacity(int truckWeightCapacity) {
         this.truckWeightCapacity = truckWeightCapacity;
     }
 
+    /**
+     *
+     * @return current value of frequency
+     */
     public int getTruckGenerationFrequency(){
         return truckGenerationFrequency;
     }
 
+    /**
+     *
+     * @param truckGenerationFrequency frequency to be set
+     */
     public void setTruckGenerationFrequency(int truckGenerationFrequency) {
         this.truckGenerationFrequency = truckGenerationFrequency;
     }
@@ -84,13 +108,18 @@ public class TruckGenerator{
         return random.nextInt(truckWeightCapacity) + 1;
     }
 
+    /**
+     *
+     * @param truckWeight amount of weight for new truck
+     * @return created new truck
+     */
     public Truck createTruck(int truckWeight){
         return new Truck(truckWeight, generateTruckIdAndIncrementCounter());
     }
 
     /**
      * generated id for truck and increments truck in simulation counter
-     * @return
+     * @return generated truck's id
      */
     public String generateTruckIdAndIncrementCounter() {
         String truckId = "T-" + this.truckCounter;

@@ -23,9 +23,9 @@ public class TruckStatus implements Comparable<TruckStatus> {
     /**
      *
      * @param o truckStatus to be compared with
-     * @return > 0 if this has grater estimated time
+     * @return greater than 0 if this has grater estimated time
      * 0 if equal
-     * < 0 if estimated time for this is shorter than o
+     * less 0 if estimated time for this is shorter than o
      */
     @Override
     public int compareTo(TruckStatus o) {

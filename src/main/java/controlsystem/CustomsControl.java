@@ -14,7 +14,9 @@ public class CustomsControl {
     private int immovableTrucks = 1;
     private TruckGenerator truckGenerator;
 
-
+    /**
+     * default constructor
+     */
     public CustomsControl() {
         this.firstLane = new ControlLane();
         this.secondLane = new ControlLane();
@@ -22,18 +24,34 @@ public class CustomsControl {
         this.truckGenerator = new TruckGenerator();
      }
 
+    /**
+     *
+     * @return current truck counter
+     */
     public int getTruckCounter(){
         return truckGenerator.getTruckCounter();
     }
 
+    /**
+     *
+     * @return reference to first lane
+     */
     public ControlLane getFirstLane() {
         return firstLane;
     }
 
+    /**
+     *
+     * @return reference to second lane
+     */
     public ControlLane getSecondLane() {
         return secondLane;
     }
 
+    /**
+     *
+     * @return reference to waiting lane
+     */
     public WaitingLane getWaitingLane() {
         return waitingLane;
     }
@@ -67,10 +85,19 @@ public class CustomsControl {
             return waitingLane;
     }
 
+    /**
+     *
+     * @return true if there is any free spot in any control lane
+     */
     private boolean isControlLaneAvailable(){
         return firstLane.hasFreePlace() || secondLane.hasFreePlace();
     }
 
+    /**
+     * should be called only if there is guarantee of free place in control lane
+     * use selectQuickestAvailableLane otherwise as designed
+     * @return reference to quicker lane if lane is available
+     */
     private ControlLane selectQuickestAvailableControlLane(){
         if(firstLane.hasFreePlace() && secondLane.hasFreePlace())
             return selectQuickerControlLane();
@@ -80,6 +107,11 @@ public class CustomsControl {
             return firstLane;
     }
 
+    /**
+     * should be called only if there is guarantee of free place in control lanes
+     * use selectQuickestAvailableLane otherwise as designed
+     * @return reference to quicker control lane
+     */
     private ControlLane selectQuickerControlLane() {
         if(firstLane.getGate().isEmpty())
             return firstLane;
@@ -151,12 +183,19 @@ public class CustomsControl {
         return (freeSlots == 2 && waitingLane.getTrucksAmount() > 0);
     }
 
+    /**
+     * responsible for moving truck from waiting gate to control lane
+     */
     private void moveTruckFromGate(){
         Truck movingTruck = waitingLane.getGate().getProcessedTruck();
         selectQuickestAvailableControlLane().placeArrivingTruck(movingTruck);
         waitingLane.getGate().releaseTruck();
     }
 
+    /**
+     * responsible for moving truck from waiting lane if there is enough free spots
+     * fot both waiting gate truck and first truck from waiting lane
+     */
     private void moveFirstTruckFromLane(){
         Truck truckFromLane = waitingLane.getQueue().poll();
         selectQuickestAvailableControlLane().placeArrivingTruck(truckFromLane);
@@ -173,6 +212,10 @@ public class CustomsControl {
             reorganizeTrucks(placement);
     }
 
+    /**
+     * responsible for counting lane balance
+     * @return truckPlacement describing trucks position
+     */
     private TruckPlacement countTruckPlacement() {
         int firstLaneTrucks = firstLane.getTrucksAmount();
         int secondLaneTrucks = secondLane.getTrucksAmount();
@@ -186,6 +229,11 @@ public class CustomsControl {
         return placement;
     }
 
+    /**
+     * responsible for switching trucks if optimization can be made
+     * @param placement current placement of truck
+     * @see CustomsControl#countTruckPlacement() to count current placement
+     */
     private void reorganizeTrucks(TruckPlacement placement) {
         if(placement == TruckPlacement.firstLaneSided)
             moveLighterTrucksToLongerLane(secondLane, firstLane);
@@ -193,6 +241,11 @@ public class CustomsControl {
             moveLighterTrucksToLongerLane(firstLane, secondLane);
     }
 
+    /**
+     * responsible for truck movement if optimization can be made
+     * @param shorterLane lane with less trucks than longer lane
+     * @param longerLane lane with more trucks than shorter lane
+     */
     private void moveLighterTrucksToLongerLane(ControlLane shorterLane, ControlLane longerLane) {
         List<Truck> shorterLaneQueue = shorterLane.getQueue();
         List<Truck> longerLaneQueue = longerLane.getQueue();
@@ -203,10 +256,22 @@ public class CustomsControl {
         }
     }
 
+    /**
+     *
+     * @param shorterLaneTruck
+     * @param longerLaneTruck
+     * @return true if truck in shorter lane is lighter than the second one
+     */
     private boolean trucksShouldBeSwitched(Truck shorterLaneTruck, Truck longerLaneTruck){
         return  shorterLaneTruck.isLighter(longerLaneTruck);
     }
 
+    /**
+     * switches trucks between lanes
+     * @param shorterLaneQueue
+     * @param longerLaneQueue
+     * @param place
+     */
     private void switchTrucksBetweenLanes(List<Truck> shorterLaneQueue, List<Truck> longerLaneQueue, int place) {
         Truck temporaryTruck = shorterLaneQueue.remove(place);
         shorterLaneQueue.add(place, longerLaneQueue.get(place));
@@ -269,6 +334,11 @@ public class CustomsControl {
             return countTimeForWaitingLaneTruck(truckId);
     }
 
+    /**
+     *
+     * @param truckId
+     * @return true if truck with given Id is currently in one of control gates
+     */
     private boolean isTruckInControlGates(String truckId) {
         boolean isInFirstGate = false;
         boolean isInSecondGate = false;
@@ -284,6 +354,12 @@ public class CustomsControl {
         return (isInFirstGate || isInSecondGate);
     }
 
+    /**
+     * should be called only for trucks in control gates
+     * @param truckId
+     * @return time needed to be processed
+     * @see CustomsControl#getWaitingTime(java.lang.String) otherwise
+     */
     private int countTimeForControlGateTruck(String truckId) {
         Truck firstGateTruck = firstLane.getGate().getProcessedTruck();
         Truck secondGateTruck = secondLane.getGate().getProcessedTruck();
@@ -299,6 +375,11 @@ public class CustomsControl {
             throw new TruckNotFoundException("Truck with requested ID " + truckId + " not found");
     }
 
+    /**
+     *
+     * @param truckId
+     * @return true if truck with given Id is currently in one of control lanes
+     */
     private boolean isTruckInControlLanes(String truckId) {
         for(Truck truck : firstLane.getQueue()){
             if(truckId.equals(truck.getTruckId()))
@@ -312,6 +393,12 @@ public class CustomsControl {
         return false;
     }
 
+    /**
+     * should be called only for trucks in control lanes
+     * @param truckId
+     * @return time needed to be processed for truck in control lane
+     * @see CustomsControl#getWaitingTime(java.lang.String) otherwise
+     */
     private int countTimeForControlLaneTruck(String truckId) {
         ControlLane truckLane = null;
         for(Truck truck : firstLane.getQueue()){
@@ -338,11 +425,22 @@ public class CustomsControl {
         return waitingTime;
     }
 
+    /**
+     *
+     * @param truckId
+     * @return true if truck with given Id is currently in waiting gate
+     */
     private boolean isTruckInWaitingGate(String truckId) {
         Truck waitingGateTruck = waitingLane.getGate().getProcessedTruck();
         return truckId.equals(waitingGateTruck.getTruckId());
     }
 
+    /**
+     * should be called only for trucks in waiting gate
+     * @param truckId
+     * @return time needed to be processed for truck in waiting gate
+     * @see CustomsControl#getWaitingTime(java.lang.String) otherwise
+     */
     private int countTimeForWaitingGateTruck(String truckId) {
         Truck waitingGateTruck = waitingLane.getGate().getProcessedTruck();
         if(!truckId.equals(waitingGateTruck.getTruckId()))
@@ -353,6 +451,12 @@ public class CustomsControl {
         return quickerTime + waitingGateTruck.getWeightAmount();
     }
 
+    /**
+     * should be called only for trucks in waiting lane
+     * @param truckId
+     * @return time needed to be processed for truck in waiting lane
+     * @see CustomsControl#getWaitingTime(java.lang.String) otherwise
+     */
     private int countTimeForWaitingLaneTruck(String truckId) {
         int firstLaneTime = firstLane.getLaneProcessingTime();
         int secondLaneTime = secondLane.getLaneProcessingTime();
@@ -375,6 +479,10 @@ public class CustomsControl {
         printStatus(statuses);
     }
 
+    /**
+     * responsible for retrieving all trucks statuses
+     * @return list of all trucks statuses in simulation
+     */
     private List<TruckStatus> getAllTrucksStatuses() {
         List<TruckStatus> statuses = new ArrayList<>();
         getControlLaneStatuses(statuses, firstLane);
@@ -384,6 +492,11 @@ public class CustomsControl {
         return statuses;
     }
 
+    /**
+     * responsible for retrieving statuses of trucks in given lane
+     * @param statuses reference of list to place result in
+     * @param lane to be checked
+     */
     private void getControlLaneStatuses(List<TruckStatus> statuses, ControlLane lane) {
         Truck firstGateTruck = lane.getGate().getProcessedTruck();
         if(firstGateTruck != null) {
@@ -396,6 +509,11 @@ public class CustomsControl {
         }
     }
 
+    /**
+     * responsible for retrieving statuses of trucks in waiting lane
+     * @param statuses reference of list to place result in
+     * @param waitingLane
+     */
     private void getWaitingLaneStatuses(List<TruckStatus> statuses, WaitingLane waitingLane) {
         Truck waitingGateTruck = waitingLane.getGate().getProcessedTruck();
         if(waitingGateTruck != null) {

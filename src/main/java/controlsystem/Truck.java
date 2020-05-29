@@ -9,10 +9,18 @@ public class Truck {
         this.truckId = truckId;
     }
 
+    /**
+     *
+     * @return truck's weight
+     */
     public int getWeightAmount() {
         return weightAmount;
     }
 
+    /**
+     *
+     * @return truck's Id
+     */
     public String getTruckId() {
         return truckId;
     }

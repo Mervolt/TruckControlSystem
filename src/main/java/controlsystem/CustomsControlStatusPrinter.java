@@ -31,12 +31,18 @@ public class CustomsControlStatusPrinter {
 
     }
 
+    /**
+     * appends wall to side of visualization
+     */
     private void appendWall(){
         customsControlBuilder.append(new String(new char[helper.fullBoardSize]).replace("\0", "-"));
         customsControlBuilder.append("\n");
         customsControlBuilder.append("\n");
     }
 
+    /**
+     * method responsible for creating a visualization board
+     */
     private void appendControlBoard(){
         if(lineCounter == 0) {
             appendToWaitingGatePosition();
@@ -102,27 +108,43 @@ public class CustomsControlStatusPrinter {
         customsControlBuilder.append("\n");
     }
 
+    /**
+     * appends side control gate or waiting gate box to StringBuilder
+     */
     private void appendSideOfBox(){
         customsControlBuilder.append("+")
                 .append(new String(new char[helper.gateWidth]).replace("\0", "-"))
                 .append("+");
     }
 
+    /**
+     * appends empty space to control gate or waiting gate
+     */
     private void appendEmptyBox(){
         customsControlBuilder.append("+")
                 .append(new String(new char[helper.gateWidth]))
                 .append("+");
     }
 
+    /**
+     * appends empty spaces from beginning of new lane to position of waiting gate
+     */
     private void appendToWaitingGatePosition(){
         customsControlBuilder.append(new String(new char[helper.waitingGatePosition]));
     }
 
+    /**
+     * appends empty spaces from end waiting gate to position of control gate
+     */
     private void appendFromWaitingGateToControlGatePosition(){
         customsControlBuilder.append(new String(new char[helper.controlGatePosition - helper.waitingGatePosition
                 - helper.gateWidth - 2]));
     }
 
+    /**
+     * appends truck lane from queue to Builder
+     * @param boxName before which trucks wait
+     */
     private void appendTruckLine(String boxName){
         int laneCapacity = 0;
         ILane lane = null;
@@ -157,6 +179,10 @@ public class CustomsControlStatusPrinter {
         customsControlBuilder.append("  ");
     }
 
+    /**
+     * appends truck to queue before gate
+     * @param truck
+     */
     private void appendTruckToLine(Truck truck){
         customsControlBuilder.append(" | ");
         int truckNumber = getTruckNumber(truck.getTruckId());
@@ -165,14 +191,21 @@ public class CustomsControlStatusPrinter {
         customsControlBuilder.append("|");
     }
 
-
-
+    /**
+     * responsible for retrieving number from Id
+     * @param truckId
+     * @return number value of Id for print usage
+     */
     private int getTruckNumber(String truckId){
         String[] truckIdSplit = truckId.split("-");
         String truckNumberString = truckIdSplit[1].trim();
         return Integer.parseInt(truckNumberString);
     }
 
+    /**
+     * responsible for appending truckNumber to visualization
+     * @param truckNumber
+     */
     private void appendTruckNumber(int truckNumber){
         customsControlBuilder.append("T-");
         if(truckNumber < 10)
@@ -183,6 +216,10 @@ public class CustomsControlStatusPrinter {
             customsControlBuilder.append(truckNumber);
     }
 
+    /**
+     * responsible for appending truckWeight to visualization
+     * @param truckWeight
+     */
     private void appendTruckWeight(int truckWeight){
         if(truckWeight < 10)
             customsControlBuilder.append(truckWeight).append("  ");
@@ -192,6 +229,10 @@ public class CustomsControlStatusPrinter {
             customsControlBuilder.append(truckWeight);
     }
 
+    /**
+     * responsible for append gate with truck in it to Builder
+     * @param boxName
+     */
     private void appendBoxWithTruck(String boxName){
         Truck truck = null;
         ILane lane = null;
@@ -219,12 +260,21 @@ public class CustomsControlStatusPrinter {
             appendEmptyBox();
     }
 
+    /**
+     * responsible for appending truck to waiting gate visualization
+     * @param truck
+     */
     private void appendTruckToWaitingGate(Truck truck) {
         int truckNumber = getTruckNumber(truck.getTruckId());
         appendTruckNumber(truckNumber);
         customsControlBuilder.append(new String(new char[7]));
     }
 
+    /**
+     * responsible for appending truck to gate in visualization
+     * @param truck
+     * @param lane
+     */
     private void appendTruckToBox(Truck truck, ILane lane) {
         int truckNumber = getTruckNumber(truck.getTruckId());
         appendTruckNumber(truckNumber);
@@ -233,6 +283,10 @@ public class CustomsControlStatusPrinter {
         appendTruckWeight(truck.getWeightAmount());
     }
 
+    /**
+     * appends truck processed time to visualization
+     * @param processedTime
+     */
     private void appendTruckProcessedTime(int processedTime) {
         if(processedTime < 10)
             customsControlBuilder.append(processedTime).append("  ");

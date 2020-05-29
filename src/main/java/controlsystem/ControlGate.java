@@ -5,6 +5,9 @@ public class ControlGate implements IGate {
     private Truck processedTruck;
     private int timeInProcess;
 
+    /**
+     * default constructor
+     */
     public ControlGate() {
         this.timeInProcess = 0;
     }

@@ -51,12 +51,22 @@ public class TruckControlSystemRunner {
             }
     }
 
+    /**
+     *
+     * @param input given to console
+     * @return retrieved string argument
+     */
     private String getOneArgumentFromParenthesis(String input){
         String[] firstSplit = input.trim().split("\\)");
         String[] secondSplit = firstSplit[0].trim().split("\\(");
         return secondSplit[1].trim();
     }
 
+    /**
+     *
+     * @param input given to console
+     * @return retrieved arguments as string
+     */
     private String[] getTwoArgumentsFromParenthesis(String input){
         String[] firstSplit = input.trim().split("\\)");
         String[] secondSplit = firstSplit[0].trim().split("\\(");

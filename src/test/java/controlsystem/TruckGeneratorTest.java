@@ -70,7 +70,7 @@ public class TruckGeneratorTest {
 
     @Test
     public void createTruck() {
-        int truckWeight = random.nextInt(truckGenerator.getTruckWeightCapacity());
+        int truckWeight = random.nextInt(truckGenerator.getTruckWeightCapacity()) + 1;
         Truck createdTruck = truckGenerator.createTruck(truckWeight);
         assertNotNull(createdTruck);
         assertNotNull(createdTruck.getTruckId());

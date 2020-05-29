@@ -9,32 +9,56 @@ public class ControlLane implements ILane {
     private ControlGate gate;
     private int laneCapacity = 5;
 
+    /**
+     * default constructor
+     */
     public ControlLane() {
         this.gate = new ControlGate();
         this.queue = new LinkedList<>();
     }
 
+    /**
+     *
+     * @return reference to trucks queue
+     */
     public LinkedList<Truck> getQueue() {
         return queue;
     }
 
+    /**
+     *
+     * @return reference to control gate
+     */
     public ControlGate getGate() {
         return gate;
     }
 
+    /**
+     *
+     * @return current lane capacity
+     */
     public int getLaneCapacity() {
         return laneCapacity;
     }
 
+    /**
+     *
+     * @return true if there is free place in lane
+     */
     public boolean hasFreePlace() {
         return laneCapacity != getLaneTruckAmount();
     }
 
+    /**
+     *
+     * @return amount of trucks in lane
+     */
     private int getLaneTruckAmount(){
         return queue.size();
     }
 
     /**
+     *
      * @return time needed to process truck in gate and all trucks currently placed in lane
      */
     public int getLaneProcessingTime(){

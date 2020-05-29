@@ -4,7 +4,6 @@ package controlsystem;
  * Class responsible for holding parameters of printed customs control
  */
 public class CustomsControlPrinterHelper {
-    protected String truckFieldSide = "*--------*";
     protected int fullBoardSize = 240;
     protected int controlGatePosition = 200;
     protected int waitingGatePosition = 120;
